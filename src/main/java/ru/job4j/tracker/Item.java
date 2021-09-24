@@ -1,6 +1,7 @@
 package ru.job4j.tracker;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
@@ -14,6 +15,7 @@ public class Item {
     private String id;
     private String name;
     private LocalDateTime created = LocalDateTime.now();
+    private Timestamp createdTimestamp;
 
     public Item() {
     }
@@ -25,6 +27,11 @@ public class Item {
     public Item(String name, LocalDateTime created) {
         this.name = name;
         this.created = created;
+    }
+
+    public Item(String name, Timestamp createdTimestamp) {
+        this.name = name;
+        this.createdTimestamp = createdTimestamp;
     }
 
     public String getId() {
@@ -47,6 +54,14 @@ public class Item {
         return created;
     }
 
+    public Timestamp getCreatedTimestamp() {
+        return createdTimestamp;
+    }
+
+    public void setCreatedTimestamp(Timestamp createdTimestamp) {
+        this.createdTimestamp = createdTimestamp;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -66,7 +81,7 @@ public class Item {
         return "Item{"
                 + "id='" + id + '\''
                 + ", name='" + name + '\''
-                + ", created=" + created.format(formatter)
+                + ", created=" + createdTimestamp
                 + '}';
     }
 

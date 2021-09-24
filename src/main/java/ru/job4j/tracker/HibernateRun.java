@@ -26,9 +26,9 @@ public class HibernateRun {
 //            Item rsl = findById(item.getId(), sf);
 //            System.out.println(rsl);
 //            delete(rsl.getId(), sf);
-            Item itemOne = create(new Item("Example 1", LocalDateTime.now()), sf);
-            Item itemTwo = create(new Item("Example 2", LocalDateTime.now()), sf);
-            Item itemThree = create(new Item("Example 3", LocalDateTime.now()), sf);
+            Item itemOne = create(new Item("old 1", new Timestamp(1)), sf);
+            Item itemTwo = create(new Item("old 2", new Timestamp(2)), sf);
+            Item itemThree = create(new Item("old 3", new Timestamp(3)), sf);
             List<Item> list = findAll(sf);
             for (Item it : list) {
                 System.out.println(it);
