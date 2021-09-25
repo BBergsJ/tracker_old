@@ -12,7 +12,7 @@ import java.util.Objects;
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private int id;
     private String name;
     private LocalDateTime created = LocalDateTime.now();
     private Timestamp createdTimestamp;
@@ -34,11 +34,11 @@ public class Item {
         this.createdTimestamp = createdTimestamp;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

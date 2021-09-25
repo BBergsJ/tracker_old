@@ -49,7 +49,7 @@ public class SqlTracker implements Store, AutoCloseable {
             ResultSet resultSet = ps.getGeneratedKeys();
             if (resultSet.next()) {
                 int id = resultSet.getInt(1);
-                item.setId(Integer.toString(id));
+                item.setId(id);
             }
         } catch (Exception e) {
             throw new IllegalStateException(e);
@@ -108,7 +108,7 @@ public class SqlTracker implements Store, AutoCloseable {
             ResultSet resultSet = ps.executeQuery();
             while (resultSet.next()) {
                 Item item = new Item(resultSet.getString("name"));
-                item.setId(resultSet.getString("id"));
+                item.setId(resultSet.getInt("id"));
                 items.add(item);
             }
         } catch (Exception e) {
@@ -125,7 +125,7 @@ public class SqlTracker implements Store, AutoCloseable {
             ResultSet resultSet = ps.executeQuery();
             while (resultSet.next()) {
                 Item item = new Item(resultSet.getString("name"));
-                item.setId(resultSet.getString("id"));
+                item.setId(resultSet.getInt("id"));
                 items.add(item);
             }
         } catch (Exception e) {
@@ -142,7 +142,7 @@ public class SqlTracker implements Store, AutoCloseable {
             ResultSet resultSet = ps.executeQuery();
             if (resultSet.next()) {
                 item.setName(resultSet.getString("name"));
-                item.setId(resultSet.getString("id"));
+                item.setId(resultSet.getInt("id"));
             }
         } catch (Exception e) {
             throw new IllegalStateException(e);

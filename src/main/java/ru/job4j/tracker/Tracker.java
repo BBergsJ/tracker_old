@@ -6,7 +6,7 @@ public class Tracker {
     private int size = 0;
 
     public Item add(Item item) {
-        item.setId(Integer.toString(ids++));
+        item.setId(ids++);
         items[size++] = item;
         return item;
     }
@@ -15,7 +15,7 @@ public class Tracker {
         Item rsl = null;
         for (int index = 0; index < size; index++) {
             Item item = items[index];
-            if (Integer.parseInt(item.getId()) == id) {
+            if (item.getId() == id) {
                 rsl = item;
                 break;
             }

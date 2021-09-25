@@ -14,10 +14,10 @@ import java.util.List;
 
 public class HibernateRun {
     public static void main(String[] args) {
-        final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
-                .configure().build();
-        try {
-            SessionFactory sf = new MetadataSources(registry).buildMetadata().buildSessionFactory();
+//        final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
+//                .configure().build();
+//        try {
+//            SessionFactory sf = new MetadataSources(registry).buildMetadata().buildSessionFactory();
 //            Item item = create(new Item("Learn Hibernate"), sf);
 //            System.out.println(item);
 //            item.setName("Learn Hibernate 5.");
@@ -26,17 +26,28 @@ public class HibernateRun {
 //            Item rsl = findById(item.getId(), sf);
 //            System.out.println(rsl);
 //            delete(rsl.getId(), sf);
-            Item itemOne = create(new Item("old 1", new Timestamp(1)), sf);
-            Item itemTwo = create(new Item("old 2", new Timestamp(2)), sf);
-            Item itemThree = create(new Item("old 3", new Timestamp(3)), sf);
-            List<Item> list = findAll(sf);
-            for (Item it : list) {
-                System.out.println(it);
-            }
-        }  catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            StandardServiceRegistryBuilder.destroy(registry);
+
+//            Item itemOne = create(new Item("old 1", new Timestamp(1)), sf);
+//            Item itemTwo = create(new Item("old 2", new Timestamp(2)), sf);
+//            Item itemThree = create(new Item("old 3", new Timestamp(3)), sf);
+//            List<Item> list = findAll(sf);
+//            for (Item it : list) {
+//                System.out.println(it);
+//            }
+//        }  catch (Exception e) {
+//            e.printStackTrace();
+//        } finally {
+//            StandardServiceRegistryBuilder.destroy(registry);
+//        }
+        HbmTracker hbmTracker = new HbmTracker();
+        hbmTracker.init();
+
+        Item test = hbmTracker.findById("16");
+
+        System.out.println(System.lineSeparator());
+        hbmTracker.replace("30", test);
+        for (Item item : hbmTracker.findAll()) {
+            System.out.println(item.getName() + " " + item.getId());
         }
     }
 
@@ -61,7 +72,7 @@ public class HibernateRun {
         Session session = sf.openSession();
         session.beginTransaction();
         Item item = new Item(null);
-        item.setId(String.valueOf(id));
+        item.setId(id);
         session.delete(item);
         session.getTransaction().commit();
         session.close();
