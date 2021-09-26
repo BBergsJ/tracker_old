@@ -6,6 +6,7 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
+import javax.management.Query;
 import java.util.List;
 
 public class HbmTracker implements Store, AutoCloseable {
@@ -32,30 +33,48 @@ public class HbmTracker implements Store, AutoCloseable {
 
     @Override
     public boolean replace(String id, Item item) {
-        if (findById(String.valueOf(id)) != null) {
-            item.setId(Integer.parseInt(id));
-            Session session = sf.openSession();
+        boolean rsl = false;
+        try (Session session = sf.openSession()) {
             session.beginTransaction();
-            session.update(item);
+            Item newItem = session.get(Item.class, Integer.parseInt(id));
+            newItem.setName(item.getName());
+            newItem.setCreated(item.getCreated());
+            newItem.setCreatedTimestamp(item.getCreatedTimestamp());
+            session.update(newItem);
             session.getTransaction().commit();
-            session.close();
-            return true;
+            rsl = true;
         }
-        return false;
+        return rsl;
+//        boolean rsl = false;
+//        try (Session session = sf.openSession()) {
+//            item.setId(Integer.parseInt(id));
+//            session.beginTransaction();
+//            session.update(item);
+//            session.getTransaction().commit();
+//            rsl = true;
+//        }
+//        return rsl;
     }
 
     @Override
     public boolean delete(String id) {
-        Item item = findById(id);
-        if (item != null) {
-            Session session = sf.openSession();
+        boolean rsl = false;
+        try (Session session = sf.openSession()) {
             session.beginTransaction();
+            Item item = session.load(Item.class, Integer.parseInt(id));
             session.delete(item);
             session.getTransaction().commit();
-            session.close();
-            return true;
         }
-        return false;
+        return rsl;
+//        boolean rsl = false;
+//        try (Session session = sf.openSession()) {
+//            session.beginTransaction();
+//            Item item = new Item();
+//            item.setId(Integer.parseInt(id));
+//            session.delete(item);
+//            session.getTransaction().commit();
+//        }
+//        return rsl;
     }
 
     @Override
