@@ -42,10 +42,10 @@ public class HibernateRun {
         HbmTracker hbmTracker = new HbmTracker();
         hbmTracker.init();
 
-        Item test = hbmTracker.findById("16");
+        Item test = hbmTracker.findById("35");
 
         System.out.println(System.lineSeparator());
-        hbmTracker.replace("30", test);
+        hbmTracker.replace("17", test);
         for (Item item : hbmTracker.findAll()) {
             System.out.println(item.getName() + " " + item.getId());
         }

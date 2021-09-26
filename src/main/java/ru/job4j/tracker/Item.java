@@ -62,6 +62,10 @@ public class Item {
         this.createdTimestamp = createdTimestamp;
     }
 
+    public void setCreated(LocalDateTime created) {
+        this.created = created;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
