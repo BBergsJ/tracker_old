@@ -45,15 +45,7 @@ public class HbmTracker implements Store, AutoCloseable {
             rsl = true;
         }
         return rsl;
-//        boolean rsl = false;
-//        try (Session session = sf.openSession()) {
-//            item.setId(Integer.parseInt(id));
-//            session.beginTransaction();
-//            session.update(item);
-//            session.getTransaction().commit();
-//            rsl = true;
-//        }
-//        return rsl;
+
     }
 
     @Override
@@ -64,17 +56,9 @@ public class HbmTracker implements Store, AutoCloseable {
             Item item = session.load(Item.class, Integer.parseInt(id));
             session.delete(item);
             session.getTransaction().commit();
+            rsl = true;
         }
         return rsl;
-//        boolean rsl = false;
-//        try (Session session = sf.openSession()) {
-//            session.beginTransaction();
-//            Item item = new Item();
-//            item.setId(Integer.parseInt(id));
-//            session.delete(item);
-//            session.getTransaction().commit();
-//        }
-//        return rsl;
     }
 
     @Override
