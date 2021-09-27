@@ -57,25 +57,6 @@ public class SqlTracker implements Store, AutoCloseable {
         return item;
     }
 
-//    @Override
-//    public Item add(Item item) {
-//        try (final PreparedStatement statement = this.connection
-//                .prepareStatement("insert into items (name, desc) values (?)", Statement.RETURN_GENERATED_KEYS)) {
-//            statement.setString(1, item.getName());
-//            statement.setString(2, item.getDesc());
-//            statement.executeUpdate();
-//            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-//                if (generatedKeys.next()) {
-//                    item.setId(generatedKeys.getString(1));
-//                    return item;
-//                }
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        throw new IllegalStateException("Could not create new user");
-//    }
-
     @Override
     public boolean replace(String id, Item item) {
         boolean rsl = false;
