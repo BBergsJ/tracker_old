@@ -15,23 +15,13 @@ public class Item {
     private int id;
     private String name;
     private LocalDateTime created = LocalDateTime.now();
-    private Timestamp createdTimestamp;
+    private Timestamp createdTimestamp = new Timestamp(System.currentTimeMillis());;
 
     public Item() {
     }
 
     public Item(String name) {
         this.name = name;
-    }
-
-    public Item(String name, LocalDateTime created) {
-        this.name = name;
-        this.created = created;
-    }
-
-    public Item(String name, Timestamp createdTimestamp) {
-        this.name = name;
-        this.createdTimestamp = createdTimestamp;
     }
 
     public int getId() {

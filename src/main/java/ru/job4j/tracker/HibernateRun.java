@@ -16,7 +16,6 @@ public class HibernateRun {
     public static void main(String[] args) {
 
         HbmTracker hbmTracker = new HbmTracker();
-        hbmTracker.init();
 
         Item test = hbmTracker.findById("35");
 

@@ -9,16 +9,11 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import java.util.List;
 
 public class HbmTracker implements Store, AutoCloseable {
-    private StandardServiceRegistry registry;
-    private SessionFactory sf;
+    private final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
+            .configure().build();
 
-    @Override
-    public void init() {
-        this.registry = new StandardServiceRegistryBuilder()
-                .configure().build();
-        this.sf = new MetadataSources(registry)
-                .buildMetadata().buildSessionFactory();
-    }
+    private final SessionFactory sf = new MetadataSources(registry)
+            .buildMetadata().buildSessionFactory();
 
     @Override
     public Item add(Item item) {
@@ -64,7 +59,7 @@ public class HbmTracker implements Store, AutoCloseable {
     public List<Item> findAll() {
         Session session = sf.openSession();
         session.beginTransaction();
-        List items = session.createQuery("from ru.job4j.tracker.Item").list();
+        List items = session.createQuery("from Item").list();
         session.getTransaction().commit();
         session.close();
         return items;
