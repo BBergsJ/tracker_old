@@ -1,7 +1,7 @@
 <?xml version = "1.0" encoding = "utf-8"?>
 <hibernate-configuration>
     <session-factory>
-        <property name = "hibernate.connection.url">jdbc:hsqldb:mem://127.0.0.1:5432/tracker;sql.enforce_size=false</property>
+        <property name = "hibernate.connection.url">jdbc:hsqldb:mem:items;sql.enforce_size=false</property>
         <property name = "hibernate.connection.driver_class">org.hsqldb.jdbcDriver</property>
         <property name = "hibernate.connection.username">postgres</property>
         <property name = "hibernate.connection.password">password</property>
@@ -12,8 +12,6 @@
         <property name="hibernate.connection.characterEncoding">UTF-8</property>
 
         <property name="hbm2ddl.auto">create</property>
-        <!-- List of XML mapping files -->
-
         <mapping class="ru.job4j.tracker.Item"/>
         <mapping class="ru.job4j.tracker.model.City"/>
 
