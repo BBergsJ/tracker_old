@@ -13,9 +13,9 @@ import java.util.List;
 
 
 public class HibernateRun {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
-        HbmTracker hbmTracker = new HbmTracker();
+        Store hbmTracker = HbmTracker.getInstance();
 
         Item test = hbmTracker.findById("35");
 

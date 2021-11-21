@@ -130,4 +130,13 @@ public class SqlTracker implements Store, AutoCloseable {
         }
         return item;
     }
+
+    @Override
+    public void deleteAllItems() {
+        try (PreparedStatement ps = cn.prepareStatement("truncate table items")) {
+            ps.executeQuery();
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+    }
 }

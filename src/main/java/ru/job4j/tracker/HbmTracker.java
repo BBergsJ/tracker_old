@@ -9,11 +9,22 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import java.util.List;
 
 public class HbmTracker implements Store, AutoCloseable {
+    private static HbmTracker instance;
     private final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
             .configure().build();
 
     private final SessionFactory sf = new MetadataSources(registry)
             .buildMetadata().buildSessionFactory();
+
+    private HbmTracker() {
+    }
+
+    public static HbmTracker getInstance() {
+        if (instance == null) {
+            instance = new HbmTracker();
+        }
+        return instance;
+    }
 
     @Override
     public Item add(Item item) {
@@ -90,5 +101,14 @@ public class HbmTracker implements Store, AutoCloseable {
     @Override
     public void close() throws Exception {
         StandardServiceRegistryBuilder.destroy(registry);
+    }
+
+    @Override
+    public void deleteAllItems() {
+        Session session = sf.openSession();
+        session.beginTransaction();
+        session.createSQLQuery("truncate table items;").executeUpdate();
+        session.getTransaction().commit();
+        session.close();
     }
 }

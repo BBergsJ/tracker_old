@@ -17,15 +17,13 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
 
-import static org.junit.Assert.*;
-
 public class SqlTrackerTest {
 
     static Connection connection;
 
     @BeforeClass
     public static void init() {
-        try (InputStream in = SqlTracker.class.getClassLoader().getResourceAsStream("test.properties")) {
+        try (InputStream in = SqlTracker.class.getClassLoader().getResourceAsStream("app.properties")) {
             Properties config = new Properties();
             config.load(in);
             Class.forName(config.getProperty("driver-class-name"));

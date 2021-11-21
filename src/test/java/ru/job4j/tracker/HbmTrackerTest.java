@@ -1,5 +1,6 @@
 package ru.job4j.tracker;
 
+import org.hibernate.Session;
 import org.junit.*;
 import ru.job4j.tracker.model.City;
 import ru.job4j.tracker.store.CityStore;
@@ -14,88 +15,58 @@ import static org.junit.Assert.*;
 
 public class HbmTrackerTest {
 
-    static Connection connection;
+    private final Store tracker = HbmTracker.getInstance();
 
-    @BeforeClass
-    public static void init() {
-        try (InputStream in = HbmTracker.class.getClassLoader().getResourceAsStream("test.properties")) {
-            Properties config = new Properties();
-            config.load(in);
-            Class.forName(config.getProperty("driver-class-name"));
-            connection = DriverManager.getConnection(
-                    config.getProperty("url"),
-                    config.getProperty("username"),
-                    config.getProperty("password")
-
-            );
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
-        }
-    }
-
-    @AfterClass
-    public static void closeConnection() throws SQLException {
-        connection.close();
-    }
-
-    @After
-    public void wipeTable() throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement("delete from items")) {
-            statement.execute();
-        }
+    @Before
+    public void before() {
+        tracker.deleteAllItems();
     }
 
     @Test
-    public void whenAdd() {
-        HbmTracker hbmTracker = new HbmTracker();
+    public void whenAdd() throws Exception {
         Item item = new Item("test1");
-        hbmTracker.add(item);
-        List<Item> all = hbmTracker.findAll();
-        assertEquals(item, all.get(0));
+        tracker.add(item);
+        Item result = tracker.findById(String.valueOf(item.getId()));
+        assertEquals(result.getName(), item.getName());
     }
 
     @Test
-    public void whenReplace() {
-        HbmTracker hbmTracker = new HbmTracker();
+    public void whenReplace() throws Exception {
         Item item = new Item("test2");
-        hbmTracker.add(item);
-        item.setName("changed");
-        hbmTracker.replace("1", item);
-        assertThat(hbmTracker.findAll().get(0).getName(), is("changed"));
+        tracker.add(item);
+        tracker.replace(String.valueOf(item.getId()), new Item("test3"));
+        Item result = tracker.findById(String.valueOf(item.getId()));
+        assertThat(result.getName(), is("test3"));
     }
 
     @Test
-    public void whenDelete() {
-        HbmTracker hbmTracker = new HbmTracker();
-        Item itemOne = new Item("One");
-        hbmTracker.add(itemOne);
-        hbmTracker.delete("1");
-        assertThat(hbmTracker.findAll().size(), is(0));
+    public void whenDelete() throws Exception {
+        Item item = new Item("test4");
+        tracker.add(item);
+        tracker.delete(String.valueOf(item.getId()));
+        assertThat(tracker.findAll().size(), is(0));
     }
 
     @Test
-    public void whenFindAll() {
-        HbmTracker hbmTracker = new HbmTracker();
+    public void whenFindAll() throws Exception {
         Item itemOne = new Item("One");
-        hbmTracker.add(itemOne);
+        tracker.add(itemOne);
         Item itemTwo = new Item("Two");
-        hbmTracker.add(itemTwo);
-        assertEquals(List.of(itemOne, itemTwo), hbmTracker.findAll());
+        tracker.add(itemTwo);
+        assertEquals(List.of(itemOne, itemTwo), tracker.findAll());
     }
 
     @Test
-    public void whenFindByName() {
-        HbmTracker hbmTracker = new HbmTracker();
+    public void whenFindByName() throws Exception {
         Item itemOne = new Item("One");
-        hbmTracker.add(itemOne);
-        assertEquals(hbmTracker.findByName("One"), List.of(itemOne));
+        tracker.add(itemOne);
+        assertEquals(tracker.findByName("One"), List.of(itemOne));
     }
 
     @Test
-    public void whenFindById() {
-        HbmTracker hbmTracker = new HbmTracker();
+    public void whenFindById() throws Exception {
         Item itemOne = new Item("One");
-        hbmTracker.add(itemOne);
-        assertEquals(hbmTracker.findById("1"), itemOne);
+        tracker.add(itemOne);
+        assertEquals(tracker.findById(String.valueOf(itemOne.getId())), itemOne);
     }
 }
